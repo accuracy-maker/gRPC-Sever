@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+// Enum to represent the generation status
+enum GenerationStatus {
+  GENERATED = 0;
+  FAILED = 1;
+}
+
+// The inference service definition
+service InferenceServer {
+    // Sends an audio generation request
+    rpc GenerateAudio (InferenceRequest) returns (AudioResponse);
+    
+    // Sends an image generation request
+    rpc GenerateImage (ImageRequest) returns (ImageResponse);
+
+}
+
+// The request message containing the prompt text.
+message InferenceRequest {
+    string prompt = 1;
+}
+
+// The response message containing the generated audio and sample rate.
+message AudioResponse {
+    bytes audio = 1;
+    int32 sample_rate = 2;
+    GenerationStatus status = 3;
+}
+
+// The request message containing the prompt text for image generation.
+message ImageRequest {
+    string prompt = 1;
+}
+
+// The response message containing the generated image and metadata.
+message ImageResponse {
+    bytes image = 1;
+    int32 width = 2;
+    int32 height = 3;
+    string format = 4; // e.g., "png", "jpeg"
+    GenerationStatus status = 5;
+}
